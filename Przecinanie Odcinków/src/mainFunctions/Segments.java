@@ -91,8 +91,10 @@ public class Segments {
 				family.add(pom);
 			 }
 			}
+
 		System.out.println(family.toString());
 		return null;
+
 		
 	}
 
