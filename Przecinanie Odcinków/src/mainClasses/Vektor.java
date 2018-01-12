@@ -28,11 +28,15 @@ public class Vektor  {
 		Point p2 = new Point (poczX, poczY, 0);
 		if (p1.compareTo(p2)<0) 
 			{
+				p1.setSide(-1);
+				p2.setSide(1);
 				setLeft (p1);
 				setRight (p2);
 			}
 		else
 		{
+			p2.setSide(-1);
+			p1.setSide(1);
 			setLeft (p2);
 			setRight (p1);
 		}
