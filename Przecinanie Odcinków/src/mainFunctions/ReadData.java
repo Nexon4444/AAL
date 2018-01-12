@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import mainClasses.Vektor;
+
 public class ReadData {
 	
 	
@@ -21,16 +23,16 @@ public class ReadData {
 			while (reader.hasNextInt())
 			{
 				Vektor pom = new Vektor();
-				pom.setPoczX(reader.nextInt());
+				pom.setPoczX((double) reader.nextInt());
 				//reader.nextInt();
 				
-				pom.setPoczY(reader.nextInt());
+				pom.setPoczY((double) reader.nextInt());
 //				reader.nextInt();
 				
-				pom.setKonX(reader.nextInt());
+				pom.setKonX((double) reader.nextInt());
 //				reader.nextInt();
 				
-				pom.setKonY(reader.nextInt());
+				pom.setKonY((double) reader.nextInt());
 //				reader.nextInt();
 				
 				pom.setOrdinal(i);

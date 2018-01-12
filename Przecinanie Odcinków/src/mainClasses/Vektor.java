@@ -1,0 +1,122 @@
+package mainClasses;
+
+public class Vektor  {
+	private Integer Ordinal;
+	private Double poczX;
+	private Double poczY;
+	private Double konX;
+	private Double konY;
+	private Boolean IsGrouped=false;
+	private Point left;
+	private Point right;
+	
+	public Vektor()
+	{
+	}
+	
+	Vektor(Double poczX, Double poczY, Double konX, Double konY)
+	{
+		setPoczX(poczX);
+		setPoczY(poczY);
+		setKonX(konX);
+		setKonY(konY);
+		setLeftRight();
+	}
+	
+	private void setLeftRight() {
+		Point p1 = new Point (poczX, poczY, 0);
+		Point p2 = new Point (poczX, poczY, 0);
+		if (p1.compareTo(p2)<0) 
+			{
+				setLeft (p1);
+				setRight (p2);
+			}
+		else
+		{
+			setLeft (p2);
+			setRight (p1);
+		}
+	}
+
+	public Double getPoczX() {
+		return poczX;
+	}
+
+	public void setPoczX(Double poczX) {
+		this.poczX = poczX;
+	}
+
+
+	public Double getPoczY() {
+		return poczY;
+	}
+
+
+	public void setPoczY(Double poczY) {
+		this.poczY = poczY;
+	}
+
+
+	public Double getKonX() {
+		return konX;
+	}
+
+
+	public void setKonX(Double konX) {
+		this.konX = konX;
+	}
+
+
+	public Double getKonY() {
+		return konY;
+	}
+
+
+	public void setKonY(Double konY) {
+		this.konY = konY;
+	}
+
+
+	public String toString()
+	{
+		return ("{(" + poczX.toString() + " " + poczY.toString() + "), ("
+				+ konX.toString() + " " + konY.toString() + ")}");
+				
+		
+	}
+
+	public Integer getOrdinal() {
+		return Ordinal;
+	}
+
+	public void setOrdinal(Integer ordinal) {
+		Ordinal = ordinal;
+	}
+
+	public Boolean getIsGrouped() {
+		return IsGrouped;
+	}
+
+	public void setIsGrouped(Boolean isGrouped) {
+		IsGrouped = isGrouped;
+	}
+
+	public Point getLeft() {
+		return left;
+	}
+
+	public void setLeft(Point left) {
+		this.left = left;
+	}
+
+	public Point getRight() {
+		return right;
+	}
+
+	public void setRight(Point right) {
+		this.right = right;
+	}
+
+	
+	
+}
