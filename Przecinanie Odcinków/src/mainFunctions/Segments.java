@@ -30,6 +30,7 @@ public class Segments {
 
 	static Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
+		if (vec1 == null || vec2 == null) return null;
 		double c1 = (double) vec1.getKonX()-vec1.getPoczX();
 		double c2 = (double) vec1.getPoczY()-vec1.getKonY();
 		double r1 = (double) vec1.getPoczX()*(vec1.getPoczY()-vec1.getKonY())-vec1.getPoczY()*(vec1.getPoczX()-vec1.getKonX());
@@ -110,6 +111,26 @@ public class Segments {
 		}
 	}
 	
+	static void inputBTree(Point element)
+	{
+		BTree.put(element, element.getVek());
+	}
+	
+	static void processLeftPoint(Point element)
+	{
+		Vektor vek1 = BTree.higherEntry(element).getValue();
+		Vektor vek2 = BTree.lowerEntry(element).getValue();
+		Point p1 = checkIfIntersect(vek1, element.getVek());
+		Point p2 = checkIfIntersect(vek2, element.getVek());
+		if (p1!=null) inputQ(p1);
+		if (p2!=null) inputQ(p2);
+	}
+	
+	static void processRightPoint(Point element)
+	{
+		
+	}
+	
 	static void inputQ(Point element)
 	{
 		if (eventQ.isEmpty())
@@ -142,6 +163,24 @@ public class Segments {
 	{
 		fillQ(data);
 		System.out.println(eventQ.toString());
+		
+		for (Point p : eventQ)
+		{
+			switch (p.getSide()) {
+			case -1:
+				inputBTree(p);
+				processLeftPoint(p);
+				break;
+			case 0:
+				
+				break;
+			case 1:
+				
+				break;
+			default:
+				break;
+			}
+		}
 	}
 	
 	
