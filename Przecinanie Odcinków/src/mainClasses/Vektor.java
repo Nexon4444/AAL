@@ -9,9 +9,11 @@ public class Vektor  {
 	private Boolean IsGrouped=false;
 	private Point left;
 	private Point right;
+	public Integer group;
 	
 	public Vektor()
 	{
+		
 	}
 	
 	Vektor(Double poczX, Double poczY, Double konX, Double konY)
@@ -23,9 +25,9 @@ public class Vektor  {
 		setLeftRight();
 	}
 	
-	private void setLeftRight() {
-		Point p1 = new Point (poczX, poczY, 0);
-		Point p2 = new Point (poczX, poczY, 0);
+	public void setLeftRight() {
+		Point p1 = new Point (poczX, poczY, 0, this);
+		Point p2 = new Point (konX, konY, 0, this);
 		if (p1.compareTo(p2)<0) 
 			{
 				p1.setSide(-1);
@@ -85,8 +87,6 @@ public class Vektor  {
 	{
 		return ("{(" + poczX.toString() + " " + poczY.toString() + "), ("
 				+ konX.toString() + " " + konY.toString() + ")}");
-				
-		
 	}
 
 	public Integer getOrdinal() {

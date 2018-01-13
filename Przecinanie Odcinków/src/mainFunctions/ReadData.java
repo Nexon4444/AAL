@@ -37,6 +37,7 @@ public class ReadData {
 				
 				pom.setOrdinal(i);
 				
+				pom.setLeftRight();
 				arrayOfData.add(pom);
 				i++;
 			}
@@ -47,7 +48,7 @@ public class ReadData {
 		}
 		
 		reader.close();
-		System.out.println(arrayOfData.toString());
+		//System.out.println(arrayOfData.toString());
 		
 		return arrayOfData;
 		

@@ -1,5 +1,9 @@
 package mainFunctions;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+import java.util.TreeMap;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -21,6 +25,8 @@ public class Segments {
 	ArrayList<ArrayList<Vektor>> arrayOfData;
 	ArrayList<ArrayList<Vektor>> arrayOfGroups;
 	static ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
+	static TreeMap<Point, Vektor> BTree;
+	static LinkedList<Point> eventQ = new LinkedList<Point>();
 
 	static Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
@@ -53,7 +59,7 @@ public class Segments {
 	{
 		if (x > Math.max(vec1.getKonX(), vec1.getPoczX()) || x < Math.min(vec1.getKonX(), vec1.getPoczX())) return null;
 		if (y > Math.max(vec1.getKonY(), vec1.getPoczY()) || y < Math.min(vec1.getKonY(), vec1.getPoczY())) return null;
-		return new Point(x, y, 0);
+		return new Point(x, y, 0, null);
 	}
 	
 	static ArrayList <ArrayList <Integer>> primitiveFamilyCheck(ArrayList<Vektor> listOfVektors)
@@ -91,16 +97,51 @@ public class Segments {
 			 }
 			}
 
-		System.out.println(family.toString());
+//		System.out.println(family.toString());
 		return null;
-
-		
 	}
 	
-	
-	static void sweepAlgorithm()
+	static void fillTree(ArrayList<Vektor> data) //fill the tree with values
 	{
-		
+		for (Vektor vek : data)
+		{
+			BTree.put(vek.getLeft(), vek);
+			BTree.put(vek.getRight(), vek);
+		}
+	}
+	
+	static void inputQ(Point element)
+	{
+		if (eventQ.isEmpty())
+			{
+				eventQ.add(element);
+				return;
+			}
+		else for (ListIterator<Point> it = eventQ.listIterator(); it.hasNext();)
+			{
+				int index = it.nextIndex();
+				if (it.next().compareTo(element) > 0)
+				{
+					eventQ.add(index, element);
+					return;
+				}
+			};
+		eventQ.add(element);
+		return;
+	}
+	
+	static void fillQ(ArrayList<Vektor> data)
+	{
+		for (Vektor vek : data)
+		{
+			inputQ(vek.getLeft());
+			inputQ(vek.getRight());
+		}
+	}
+	static void sweepAlgorithm(ArrayList<Vektor> data)
+	{
+		fillQ(data);
+		System.out.println(eventQ.toString());
 	}
 	
 	
