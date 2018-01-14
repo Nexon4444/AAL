@@ -12,6 +12,8 @@ public class Point implements Comparable <Point> {
 	Double y;
 	Integer side;
 	Vektor vek;
+	public Vektor vekInter1=null;
+	public Vektor vekInter2=null;
 	
 	public Point(Double x, Double y, Integer side, Vektor vek) {
 		super();
@@ -19,6 +21,24 @@ public class Point implements Comparable <Point> {
 		this.y = y;
 		this.side = side;
 		this.vek = vek;
+	}
+	
+
+	public Point(Double x, Double y, Integer side, Vektor vek, Vektor vekInter1, Vektor vekInter2) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.side = side;
+		this.vek = vek;
+		this.vekInter1 = vekInter1;
+		this.vekInter2 = vekInter2;
+	}
+
+
+	public void setIntersectingVektors(Vektor vek1, Vektor vek2)
+	{
+		vekInter1=vek1;
+		vekInter2=vek2;	
 	}
 	public Double getX() {
 		return x;

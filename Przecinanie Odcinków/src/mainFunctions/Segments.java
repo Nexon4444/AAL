@@ -1,6 +1,5 @@
 package mainFunctions;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.TreeMap;
@@ -25,7 +24,7 @@ public class Segments {
 	ArrayList<ArrayList<Vektor>> arrayOfData;
 	ArrayList<ArrayList<Vektor>> arrayOfGroups;
 	static ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
-	static TreeMap<Point, Vektor> BTree;
+	static TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
 	static LinkedList<Point> eventQ = new LinkedList<Point>();
 	static Integer lastGroupNumber = -1 ;
 	static Point checkIfIntersect(Vektor vec1, Vektor vec2)
@@ -56,14 +55,23 @@ public class Segments {
 
 	}
 	
-	static Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
+	static Point checkIfBelongsOLD(Vektor vec1, Vektor vec2, Double x, Double y)
 	{
-		if (x > Math.max(vec1.getKonX(), vec1.getPoczX()) || x < Math.min(vec1.getKonX(), vec1.getPoczX())) return null;
+		if (x > Math.max(vec1.getKonX(), vec1.getPoczX())
+				|| x < Math.min(vec1.getKonX(), vec1.getPoczX())) return null;
 		if (y > Math.max(vec1.getKonY(), vec1.getPoczY()) || y < Math.min(vec1.getKonY(), vec1.getPoczY())) return null;
-		return new Point(x, y, 0, null);
+		return new Point(x, y, 0, null, vec1, vec2);
 	}
 	
-	static ArrayList <ArrayList <Integer>> primitiveFamilyCheck(ArrayList<Vektor> listOfVektors)
+	static Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
+	{
+		Point point = new Point(y, x, 0, null, vec1, vec2);
+		if ((point.compareTo(vec1.getLeft())<0) || (point.compareTo(vec2.getLeft())<0)) return null;
+		if ((point.compareTo(vec1.getRight())>0) || (point.compareTo(vec2.getRight())>0)) return null;
+		return new Point(x, y, 0, null, vec1, vec2);
+	}
+	
+	static ArrayList <ArrayList <Integer>> primitiveFamilyCheckOLD(ArrayList<Vektor> listOfVektors)
 	{
 		int ArrayList;
 		ArrayList <Vektor> pom = new ArrayList<Vektor> ();
@@ -98,8 +106,22 @@ public class Segments {
 			 }
 			}
 
-//		System.out.println(family.toString());
+		System.out.println(family.toString());
 		return null;
+	}
+	static void primitiveFamilyCheck(ArrayList<Vektor> listOfVektors)
+	{
+//		family.add(ArrayList<Vektor> = new ArrayList<Vektor> listOfVektors.get(0));
+		for (int i = 0, max = listOfVektors.size(); i<max; i++)
+			{
+			 Vektor vekPoz = listOfVektors.get(i);
+			 for (int j = i+1;  j != listOfVektors.size() ; j++)
+				{
+				 Vektor vekPion = listOfVektors.get(j);				  
+				 mark(vekPion,vekPoz);
+				 }
+			}
+//		return null;
 	}
 	
 	static void fillTree(ArrayList<Vektor> data) //fill the tree with values
@@ -115,13 +137,21 @@ public class Segments {
 	{
 		Point point=checkIfIntersect(vec1, vec2);
 		if (point!=null)
-		{
-			if (vec1.group== -1) //sprawwdziæ czy nie ma b³êdu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		{	if(vec1.group==-1&&vec2.group==-1)
 			{
-				vec1.group=vec2.group;
+				lastGroupNumber++;
+				vec2.group=vec1.group=lastGroupNumber;
 			}
+			else
+			{
+				if (vec1.group== -1) //sprawwdziæ czy nie ma b³êdu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				{
+					vec1.group=vec2.group;
+				}
 			
-			else vec2.group=vec1.group;
+				else vec2.group=vec1.group;
+				
+			}
 			return point;
 		}
 		else return null;
@@ -129,13 +159,19 @@ public class Segments {
 	
 	static void inputBTree(Point element)
 	{
+		System.out.println(element.toString());
+		System.out.println(element.getVek().toString());
 		BTree.put(element, element.getVek());
 	}
 	
 	static void processLeftPoint(Point element)
 	{
-		Vektor vek1 = BTree.higherEntry(element).getValue();
-		Vektor vek2 = BTree.lowerEntry(element).getValue();
+		Vektor vek1=null;
+		Vektor vek2=null;
+		if (BTree.higherEntry(element)!=null)
+			vek1 = BTree.higherEntry(element).getValue();
+		if (BTree.lowerEntry(element)!=null)
+			vek2 = BTree.lowerEntry(element).getValue();
 		Point p1 = mark(vek1, element.getVek());
 		Point p2 = mark(vek2, element.getVek());
 		if (p1!=null) inputQ(p1);
@@ -143,12 +179,47 @@ public class Segments {
 	}
 	static void processIntersection(Point element)
 	{
+		Point p1 = null;
+		Point p2 = null;
+		System.out.println(BTree); 
+//		System.out.println("element.vekInter1.getLeft(): " + element.vekInter1.getLeft() + "for: " + element.vekInter2);
+//		System.out.println("element.vekInter2.getLeft(): " + element.vekInter2.getLeft() + "for: " + element.vekInter1);
+		BTree.replace(element.vekInter1.getLeft(), element.vekInter2);
+		BTree.replace(element.vekInter2.getLeft(), element.vekInter1);
+		System.out.println(BTree);
 		
+		if(element.vekInter1.getRight().getY()>element.vekInter2.getRight().getY()) // if inter1 > inter2, higher end
+		{																			//a co jeœli "=="???????????????????????????????????????????????????????????????????
+			Point higher = element.vekInter2.getLeft();
+			Point lower = element.vekInter1.getLeft();
+			
+			System.out.println("powinno byc (0,2): " + higher);
+			System.out.println("powinno byc (0,0): " + lower);
+			if (BTree.higherEntry(higher)!= null)
+				p1 = mark(BTree.get(higher), BTree.higherEntry(higher).getValue());
+			if (BTree.lowerEntry(lower)!= null)
+				p2 = mark(BTree.get(lower), BTree.lowerEntry(lower).getValue());
+		}
+		
+		else
+		{
+			Point higher = element.vekInter1.getLeft();
+			Point lower = element.vekInter2.getLeft();
+			if (BTree.higherEntry(higher)!= null)
+				p1 = mark(BTree.get(higher), BTree.higherEntry(higher).getValue());
+			if (BTree.lowerEntry(lower)!= null)
+				p2 = mark(BTree.get(lower), BTree.lowerEntry(lower).getValue());
+		}
+		if (p1!=null)
+			inputQ(p1);
+		if (p2!=null) 
+			inputQ(p2);
 	}
 	static void processRightPoint(Point element)
 	{
-		Point point = mark(BTree.higherKey(element).getVek(), BTree.lowerKey(element).getVek());
-			if (point != null) inputQ(point);
+		Point point = null;
+		if(BTree.higherKey(element)!=null && BTree.lowerKey(element)!=null) point = mark(BTree.higherKey(element).getVek(), BTree.lowerKey(element).getVek());
+		if (point != null) inputQ(point);
 		BTree.remove(element.getVek().getLeft());
 	}
 	
@@ -180,20 +251,34 @@ public class Segments {
 			inputQ(vek.getRight());
 		}
 	}
+	
+	static void showGroups(ArrayList<Vektor> data)
+	{
+		ArrayList <ArrayList <Vektor>> result = new ArrayList <ArrayList <Vektor>>();
+		ArrayList <Vektor> aux = new ArrayList <Vektor>();
+		int i =0;
+		for (Vektor vek : data)
+		{
+			System.out.print(i + ": ");
+			System.out.println(vek.group);
+			i++;
+		}
+	}
+	
 	static void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillQ(data);
-		System.out.println(eventQ.toString());
-		
-		for (Point p : eventQ)
-		{
+//		System.out.println(eventQ.toString());
+		Point p;
+		for (int i = 0; i<eventQ.size();i++)
+		{	p = eventQ.get(i);
 			switch (p.getSide()) {
 			case -1:
 				inputBTree(p);
 				processLeftPoint(p);
 				break;
 			case 0:
-				
+				processIntersection(p);
 				break;
 			case 1:
 				processRightPoint(p);
@@ -201,7 +286,12 @@ public class Segments {
 			default:
 				break;
 			}
+			
 		}
+		System.out.println("leco grupy");
+		System.out.println(data.toString());
+		showGroups(data);
+
 	}
 	
 	
