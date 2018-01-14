@@ -27,7 +27,7 @@ public class Segments {
 	static ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	static TreeMap<Point, Vektor> BTree;
 	static LinkedList<Point> eventQ = new LinkedList<Point>();
-
+	static Integer lastGroupNumber = -1 ;
 	static Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
 		if (vec1 == null || vec2 == null) return null;
@@ -111,6 +111,22 @@ public class Segments {
 		}
 	}
 	
+	static Point mark(Vektor vec1, Vektor vec2)
+	{
+		Point point=checkIfIntersect(vec1, vec2);
+		if (point!=null)
+		{
+			if (vec1.group== -1) //sprawwdziæ czy nie ma b³êdu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			{
+				vec1.group=vec2.group;
+			}
+			
+			else vec2.group=vec1.group;
+			return point;
+		}
+		else return null;
+	}
+	
 	static void inputBTree(Point element)
 	{
 		BTree.put(element, element.getVek());
@@ -120,15 +136,20 @@ public class Segments {
 	{
 		Vektor vek1 = BTree.higherEntry(element).getValue();
 		Vektor vek2 = BTree.lowerEntry(element).getValue();
-		Point p1 = checkIfIntersect(vek1, element.getVek());
-		Point p2 = checkIfIntersect(vek2, element.getVek());
+		Point p1 = mark(vek1, element.getVek());
+		Point p2 = mark(vek2, element.getVek());
 		if (p1!=null) inputQ(p1);
 		if (p2!=null) inputQ(p2);
 	}
-	
-	static void processRightPoint(Point element)
+	static void processIntersection(Point element)
 	{
 		
+	}
+	static void processRightPoint(Point element)
+	{
+		Point point = mark(BTree.higherKey(element).getVek(), BTree.lowerKey(element).getVek());
+			if (point != null) inputQ(point);
+		BTree.remove(element.getVek().getLeft());
 	}
 	
 	static void inputQ(Point element)
@@ -175,7 +196,7 @@ public class Segments {
 				
 				break;
 			case 1:
-				
+				processRightPoint(p);
 				break;
 			default:
 				break;

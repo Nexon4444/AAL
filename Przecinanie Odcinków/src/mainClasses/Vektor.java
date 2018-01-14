@@ -9,7 +9,7 @@ public class Vektor  {
 	private Boolean IsGrouped=false;
 	private Point left;
 	private Point right;
-	public Integer group;
+	public Integer group = -1;
 	
 	public Vektor()
 	{
