@@ -23,11 +23,11 @@ public class Segments {
 	
 	ArrayList<ArrayList<Vektor>> arrayOfData;
 	ArrayList<ArrayList<Vektor>> arrayOfGroups;
-	static ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
-	static TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
-	static LinkedList<Point> eventQ = new LinkedList<Point>();
-	static Integer lastGroupNumber = -1 ;
-	static Point checkIfIntersect(Vektor vec1, Vektor vec2)
+	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
+	TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
+	LinkedList<Point> eventQ = new LinkedList<Point>();
+	 Integer lastGroupNumber = -1 ;
+	 Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
 		if (vec1 == null || vec2 == null) return null;
 		double c1 = (double) vec1.getKonX()-vec1.getPoczX();
@@ -55,7 +55,7 @@ public class Segments {
 
 	}
 	
-	static Point checkIfBelongsOLD(Vektor vec1, Vektor vec2, Double x, Double y)
+	 Point checkIfBelongsOLD(Vektor vec1, Vektor vec2, Double x, Double y)
 	{
 		if (x > Math.max(vec1.getKonX(), vec1.getPoczX())
 				|| x < Math.min(vec1.getKonX(), vec1.getPoczX())) return null;
@@ -63,7 +63,7 @@ public class Segments {
 		return new Point(x, y, 0, null, vec1, vec2);
 	}
 	
-	static Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
+	 Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
 	{
 		Point point = new Point(y, x, 0, null, vec1, vec2);
 		if ((point.compareTo(vec1.getLeft())<0) || (point.compareTo(vec2.getLeft())<0)) return null;
@@ -71,7 +71,7 @@ public class Segments {
 		return new Point(x, y, 0, null, vec1, vec2);
 	}
 	
-	static ArrayList <ArrayList <Integer>> primitiveFamilyCheckOLD(ArrayList<Vektor> listOfVektors)
+	 ArrayList <ArrayList <Integer>> primitiveFamilyCheckOLD(ArrayList<Vektor> listOfVektors)
 	{
 		int ArrayList;
 		ArrayList <Vektor> pom = new ArrayList<Vektor> ();
@@ -109,22 +109,23 @@ public class Segments {
 		System.out.println(family.toString());
 		return null;
 	}
-	static void primitiveFamilyCheck(ArrayList<Vektor> listOfVektors)
+	 void primitiveFamilyCheck(ArrayList<Vektor> data)
 	{
-//		family.add(ArrayList<Vektor> = new ArrayList<Vektor> listOfVektors.get(0));
-		for (int i = 0, max = listOfVektors.size(); i<max; i++)
+//		family.add(ArrayList<Vektor> = new ArrayList<Vektor> data.get(0));
+		for (int i = 0, max = data.size(); i<max; i++)
 			{
-			 Vektor vekPoz = listOfVektors.get(i);
-			 for (int j = i+1;  j != listOfVektors.size() ; j++)
+			 Vektor vekPoz = data.get(i);
+			 for (int j = i+1;  j != data.size() ; j++)
 				{
-				 Vektor vekPion = listOfVektors.get(j);				  
+				 Vektor vekPion = data.get(j);				  
 				 mark(vekPion,vekPoz);
 				 }
 			}
+		showGroups(data);
 //		return null;
 	}
 	
-	static void fillTree(ArrayList<Vektor> data) //fill the tree with values
+	 void fillTree(ArrayList<Vektor> data) //fill the tree with values
 	{
 		for (Vektor vek : data)
 		{
@@ -133,7 +134,7 @@ public class Segments {
 		}
 	}
 	
-	static Point mark(Vektor vec1, Vektor vec2)
+	 Point mark(Vektor vec1, Vektor vec2)
 	{
 		Point point=checkIfIntersect(vec1, vec2);
 		if (point!=null)
@@ -157,14 +158,13 @@ public class Segments {
 		else return null;
 	}
 	
-	static void inputBTree(Point element)
+	 void inputBTree(Point element)
 	{
-		System.out.println(element.toString());
-		System.out.println(element.getVek().toString());
+
 		BTree.put(element, element.getVek());
 	}
 	
-	static void processLeftPoint(Point element)
+	 void processLeftPoint(Point element)
 	{
 		Vektor vek1=null;
 		Vektor vek2=null;
@@ -177,24 +177,21 @@ public class Segments {
 		if (p1!=null) inputQ(p1);
 		if (p2!=null) inputQ(p2);
 	}
-	static void processIntersection(Point element)
+	 void processIntersection(Point element)
 	{
 		Point p1 = null;
 		Point p2 = null;
-		System.out.println(BTree); 
+
 //		System.out.println("element.vekInter1.getLeft(): " + element.vekInter1.getLeft() + "for: " + element.vekInter2);
 //		System.out.println("element.vekInter2.getLeft(): " + element.vekInter2.getLeft() + "for: " + element.vekInter1);
 		BTree.replace(element.vekInter1.getLeft(), element.vekInter2);
 		BTree.replace(element.vekInter2.getLeft(), element.vekInter1);
-		System.out.println(BTree);
 		
 		if(element.vekInter1.getRight().getY()>element.vekInter2.getRight().getY()) // if inter1 > inter2, higher end
 		{																			//a co jeœli "=="???????????????????????????????????????????????????????????????????
 			Point higher = element.vekInter2.getLeft();
 			Point lower = element.vekInter1.getLeft();
 			
-			System.out.println("powinno byc (0,2): " + higher);
-			System.out.println("powinno byc (0,0): " + lower);
 			if (BTree.higherEntry(higher)!= null)
 				p1 = mark(BTree.get(higher), BTree.higherEntry(higher).getValue());
 			if (BTree.lowerEntry(lower)!= null)
@@ -215,7 +212,7 @@ public class Segments {
 		if (p2!=null) 
 			inputQ(p2);
 	}
-	static void processRightPoint(Point element)
+	 void processRightPoint(Point element)
 	{
 		Point point = null;
 		if(BTree.higherKey(element)!=null && BTree.lowerKey(element)!=null) point = mark(BTree.higherKey(element).getVek(), BTree.lowerKey(element).getVek());
@@ -223,7 +220,7 @@ public class Segments {
 		BTree.remove(element.getVek().getLeft());
 	}
 	
-	static void inputQ(Point element)
+	 void inputQ(Point element)
 	{
 		if (eventQ.isEmpty())
 			{
@@ -243,7 +240,7 @@ public class Segments {
 		return;
 	}
 	
-	static void fillQ(ArrayList<Vektor> data)
+	 void fillQ(ArrayList<Vektor> data)
 	{
 		for (Vektor vek : data)
 		{
@@ -252,7 +249,7 @@ public class Segments {
 		}
 	}
 	
-	static void showGroups(ArrayList<Vektor> data)
+	 void showGroups(ArrayList<Vektor> data)
 	{
 		ArrayList <ArrayList <Vektor>> result = new ArrayList <ArrayList <Vektor>>();
 		ArrayList <Vektor> aux = new ArrayList <Vektor>();
@@ -265,7 +262,7 @@ public class Segments {
 		}
 	}
 	
-	static void sweepAlgorithm(ArrayList<Vektor> data)
+	 void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillQ(data);
 //		System.out.println(eventQ.toString());
@@ -288,8 +285,8 @@ public class Segments {
 			}
 			
 		}
-		System.out.println("leco grupy");
-		System.out.println(data.toString());
+//		System.out.println("leco grupy");
+//		System.out.println(data.toString());
 		showGroups(data);
 
 	}
