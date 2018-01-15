@@ -15,6 +15,12 @@ public class Point implements Comparable <Point> {
 	public Vektor vekInter1=null;
 	public Vektor vekInter2=null;
 	
+	public Point(Double x, Double y) {
+		super();
+		this.x = x;
+		this.y = y;
+	}
+
 	public Point(Double x, Double y, Integer side, Vektor vek) {
 		super();
 		this.x = x;
@@ -65,16 +71,23 @@ public class Point implements Comparable <Point> {
 	public void setVek(Vektor vek) {
 		this.vek = vek;
 	}
-	public String toString()
-	{
-		return new String("(" + x + ", " + y + ")" );
-		
-	}
+//	public String toString()
+//	{
+//		return new String("(" + x + ", " + y + ")" );
+//		
+//	}
+	
+	
 	@Override
 	public int compareTo(Point point) {
 		if (!this.x.equals(point.getX()))
 			return Double.compare(this.x, point.getX());
 		return Double.compare(this.y, point.getY());
+	}
+
+	@Override
+	public String toString() {
+		return "Point [x=" + x + ", y=" + y + "]";
 	}
 	
 }

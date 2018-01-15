@@ -16,6 +16,14 @@ public class Vektor  {
 		
 	}
 	
+	public Vektor(Point pocz, Point kon)
+	{
+		setPoczX(pocz.getX());
+		setPoczY(pocz.getY());
+		setKonX(kon.getX());
+		setKonY(kon.getY());
+		setLeftRight();
+	}
 	Vektor(Double poczX, Double poczY, Double konX, Double konY)
 	{
 		setPoczX(poczX);
@@ -83,14 +91,22 @@ public class Vektor  {
 	}
 
 
-	public String toString()
-	{
-		return ("{(" + poczX.toString() + " " + poczY.toString() + "), ("
-				+ konX.toString() + " " + konY.toString() + ")}");
-	}
+//	public String toString()
+//	{
+//		return ("{(" + poczX.toString() + " " + poczY.toString() + "), ("
+//				+ konX.toString() + " " + konY.toString() + ")}");
+//	}
+	
+	
 
 	public Integer getOrdinal() {
 		return Ordinal;
+	}
+
+	@Override
+	public String toString() {
+		return "Vektor [poczX=" + poczX + ", poczY=" + poczY + ", konX=" + konX + ", konY=" + konY + ", group=" + group
+				+ "]";
 	}
 
 	public void setOrdinal(Integer ordinal) {

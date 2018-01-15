@@ -2,6 +2,8 @@ package mainFunctions;
 
 import java.util.ArrayList;
 import java.util.Random;
+
+import mainClasses.Point;
 import mainClasses.Vektor;
 
 public class Generator {
@@ -14,13 +16,12 @@ public class Generator {
 	Random random = new Random();
 	ArrayList<Vektor> data = new ArrayList<Vektor>();
 	
-	public Generator(int s, int mean, int variance, int amount, Random random, int width, int height) {
+	public Generator(int s, int mean, int variance, int amount, int width, int height) {
 		super();
 		this.s = s;
 		this.mean = s/2;
 		this.variance = variance;
 		this.amount = amount;
-		this.random = random;
 		this.width = width;
 		this.height = height;
 	}
@@ -31,7 +32,9 @@ public class Generator {
 	{
 		for (int i=0; i<amount; i++)
 		{
-//			 RandomGaussian gaussian = new RandomGaussian();
+			Point pocz = genarateFirstPoint();
+			Point kon = genarateSecondPoint(pocz);
+			data.add(new Vektor(genarateFirstPoint(), genarateSecondPoint(pocz)));
 		}
 	}
 	
@@ -42,14 +45,37 @@ public class Generator {
 	private int generateLength()
 	{
 		double length = getGaussian();
-		if (s<length) length = s;
+		length =length%s;
 		System.out.format("%.0f%n", length);
-		return (int)length;
+		return (int)length + 1;
 	}
 	
-	private int genarateFirstPoint()
+	private Point genarateFirstPoint()
 	{
-		random.nextInt();
+		return new Point((double)random.nextInt()%width, (double)random.nextInt()%height);
 	}
+	
+	private Point genarateSecondPoint(Point point)
+	{
+		int l=generateLength();
+		int x=random.nextInt()%l;
+		int y=l-x; 
+		return new Point(point.getX()+x, point.getY()+y);
+	}
+
+	public void showGenerated()
+	{
+		for (Vektor vek : data)
+		{
+			System.out.println(vek.toString());
+		}
+	}
+	
+	@Override
+	public String toString() {
+		return "Generator [s=" + s + ", mean=" + mean + ", variance=" + variance + ", amount=" + amount + ", width="
+				+ width + ", height=" + height + ", random=" + random + ", data=" + data + "]";
+	}	
+	
 	
 }
