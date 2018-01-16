@@ -12,10 +12,11 @@ public class Main {
 
 		Generator gen = new Generator(10, 5, 2, 10, 500, 500);
 		gen.generate();
-		gen.showGenerated();
-//		Segments segment1 = new Segments();
+		//gen.showGenerated();
+		Segments segment1 = new Segments();
 //		Segments segment2 = new Segments();
-//		segment1.primitiveFamilyCheck(ReadData.read("src/mainFunctions/test.txt"));
+		segment1.primitiveFamilyCheck(gen.getData());
+		segment1.showGroups();
 //		segment2.sweepAlgorithm(ReadData.read("src/mainFunctions/test.txt"));
 
 	}

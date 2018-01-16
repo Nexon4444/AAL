@@ -103,6 +103,14 @@ public class Vektor  {
 		return Ordinal;
 	}
 
+	public Integer getGroup() {
+		return group;
+	}
+
+	public void setGroup(Integer group) {
+		this.group = group;
+	}
+
 	@Override
 	public String toString() {
 		return "Vektor [poczX=" + poczX + ", poczY=" + poczY + ", konX=" + konX + ", konY=" + konY + ", group=" + group

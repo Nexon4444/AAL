@@ -45,10 +45,10 @@ public class Segments {
 		
 		try {
 			solution = solver.solve(constants);
-//			System.out.println(solution.getEntry(0) + " " + solution.getEntry(1));
+
 		} catch (SingularMatrixException e) {
 			
-//			e.printStackTrace();
+
 			return null;
 		}
 		return checkIfBelongs(vec1, vec2, solution.getEntry(0), solution.getEntry(1));
@@ -106,7 +106,7 @@ public class Segments {
 			 }
 			}
 
-		System.out.println(family.toString());
+
 		return null;
 	}
 	 void primitiveFamilyCheck(ArrayList<Vektor> data)
@@ -121,7 +121,7 @@ public class Segments {
 				 mark(vekPion,vekPoz);
 				 }
 			}
-		showGroups(data);
+		showGroups();
 //		return null;
 	}
 	
@@ -181,9 +181,6 @@ public class Segments {
 	{
 		Point p1 = null;
 		Point p2 = null;
-
-//		System.out.println("element.vekInter1.getLeft(): " + element.vekInter1.getLeft() + "for: " + element.vekInter2);
-//		System.out.println("element.vekInter2.getLeft(): " + element.vekInter2.getLeft() + "for: " + element.vekInter1);
 		BTree.replace(element.vekInter1.getLeft(), element.vekInter2);
 		BTree.replace(element.vekInter2.getLeft(), element.vekInter1);
 		
@@ -249,19 +246,27 @@ public class Segments {
 		}
 	}
 	
-	 void showGroups(ArrayList<Vektor> data)
+	 void showGroups()
 	{
 		ArrayList <ArrayList <Vektor>> result = new ArrayList <ArrayList <Vektor>>();
 		ArrayList <Vektor> aux = new ArrayList <Vektor>();
 		int i =0;
-		for (Vektor vek : data)
+		for (ArrayList <Vektor> vekArr : family)
 		{
 			System.out.print(i + ": ");
-			System.out.println(vek.group);
+			
+			System.out.println(vekArr);
 			i++;
 		}
 	}
 	
+	 void fillFamily(ArrayList <Vektor> data)
+	 {
+		 for (Vektor vek: data)
+		 {
+			 family.get(vek.getGroup()).add(vek);
+		 }
+	 }
 	 void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillQ(data);
@@ -285,9 +290,8 @@ public class Segments {
 			}
 			
 		}
-//		System.out.println("leco grupy");
-//		System.out.println(data.toString());
-		showGroups(data);
+		fillFamily(data);
+
 
 	}
 	

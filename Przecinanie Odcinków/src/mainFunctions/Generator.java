@@ -34,7 +34,7 @@ public class Generator {
 		{
 			Point pocz = genarateFirstPoint();
 			Point kon = genarateSecondPoint(pocz);
-			data.add(new Vektor(genarateFirstPoint(), genarateSecondPoint(pocz)));
+			data.add(new Vektor(pocz, genarateSecondPoint(pocz)));
 		}
 	}
 	
@@ -46,7 +46,8 @@ public class Generator {
 	{
 		double length = getGaussian();
 		length =length%s;
-		System.out.format("%.0f%n", length);
+		Math.abs(length);
+//		System.out.format("%.0f%n", length);
 		return (int)length + 1;
 	}
 	
@@ -58,7 +59,8 @@ public class Generator {
 	private Point genarateSecondPoint(Point point)
 	{
 		int l=generateLength();
-		int x=random.nextInt()%l;
+		int x=random.nextInt();
+		if (l!=0) x=x%l;
 		int y=l-x; 
 		return new Point(point.getX()+x, point.getY()+y);
 	}
@@ -67,10 +69,17 @@ public class Generator {
 	{
 		for (Vektor vek : data)
 		{
-			System.out.println(vek.toString());
+		 	System.out.println(vek.toString());
 		}
 	}
 	
+	
+	public ArrayList<Vektor> getData() {
+		return data;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Generator [s=" + s + ", mean=" + mean + ", variance=" + variance + ", amount=" + amount + ", width="
