@@ -34,7 +34,9 @@ public class Generator {
 		{
 			Point pocz = genarateFirstPoint();
 			Point kon = genarateSecondPoint(pocz);
-			data.add(new Vektor(pocz, genarateSecondPoint(pocz)));
+			Vektor vek = new Vektor(pocz, genarateSecondPoint(pocz));
+			data.add(vek);
+//			System.out.println(vek.toString());
 		}
 	}
 	
@@ -53,13 +55,14 @@ public class Generator {
 	
 	private Point genarateFirstPoint()
 	{
-		return new Point((double)random.nextInt()%width, (double)random.nextInt()%height);
+		return new Point(Math.abs((double)random.nextInt())%width, Math.abs((double)random.nextInt())%height);
 	}
 	
 	private Point genarateSecondPoint(Point point)
 	{
 		int l=generateLength();
 		int x=random.nextInt();
+		x=Math.abs(x);
 		if (l!=0) x=x%l;
 		int y=l-x; 
 		return new Point(point.getX()+x, point.getY()+y);

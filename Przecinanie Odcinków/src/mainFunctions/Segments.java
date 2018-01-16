@@ -12,6 +12,8 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
+import com.sun.glass.ui.Size;
+
 import mainClasses.Point;
 import mainClasses.Vektor;
 
@@ -27,7 +29,7 @@ public class Segments {
 	TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
 	LinkedList<Point> eventQ = new LinkedList<Point>();
 	 Integer lastGroupNumber = -1 ;
-	 Point checkIfIntersect(Vektor vec1, Vektor vec2)
+	 public static Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
 		if (vec1 == null || vec2 == null) return null;
 		double c1 = (double) vec1.getKonX()-vec1.getPoczX();
@@ -51,7 +53,7 @@ public class Segments {
 
 			return null;
 		}
-		return checkIfBelongs(vec1, vec2, solution.getEntry(0), solution.getEntry(1));
+		return checkIfBelongs(vec1, vec2, solution.getEntry(1), solution.getEntry(0));
 
 	}
 	
@@ -63,12 +65,12 @@ public class Segments {
 		return new Point(x, y, 0, null, vec1, vec2);
 	}
 	
-	 Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
+	 static Point checkIfBelongs(Vektor vec1, Vektor vec2, Double x, Double y)
 	{
-		Point point = new Point(y, x, 0, null, vec1, vec2);
+		Point point = new Point (x, y, 0, null, vec1, vec2);
 		if ((point.compareTo(vec1.getLeft())<0) || (point.compareTo(vec2.getLeft())<0)) return null;
 		if ((point.compareTo(vec1.getRight())>0) || (point.compareTo(vec2.getRight())>0)) return null;
-		return new Point(x, y, 0, null, vec1, vec2);
+		return point;
 	}
 	
 	 ArrayList <ArrayList <Integer>> primitiveFamilyCheckOLD(ArrayList<Vektor> listOfVektors)
@@ -121,7 +123,7 @@ public class Segments {
 				 mark(vekPion,vekPoz);
 				 }
 			}
-		showGroups();
+		fillFamily(data);
 //		return null;
 	}
 	
@@ -186,8 +188,8 @@ public class Segments {
 		
 		if(element.vekInter1.getRight().getY()>element.vekInter2.getRight().getY()) // if inter1 > inter2, higher end
 		{																			//a co jeœli "=="???????????????????????????????????????????????????????????????????
-			Point higher = element.vekInter2.getLeft();
-			Point lower = element.vekInter1.getLeft();
+			Point higher = element.vekInter1.getLeft();
+			Point lower = element.vekInter2.getLeft();
 			
 			if (BTree.higherEntry(higher)!= null)
 				p1 = mark(BTree.get(higher), BTree.higherEntry(higher).getValue());
@@ -197,8 +199,8 @@ public class Segments {
 		
 		else
 		{
-			Point higher = element.vekInter1.getLeft();
-			Point lower = element.vekInter2.getLeft();
+			Point higher = element.vekInter2.getLeft();
+			Point lower = element.vekInter1.getLeft();
 			if (BTree.higherEntry(higher)!= null)
 				p1 = mark(BTree.get(higher), BTree.higherEntry(higher).getValue());
 			if (BTree.lowerEntry(lower)!= null)
@@ -227,11 +229,14 @@ public class Segments {
 		else for (ListIterator<Point> it = eventQ.listIterator(); it.hasNext();)
 			{
 				int index = it.nextIndex();
-				if (it.next().compareTo(element) > 0)
+				Point p = it.next();
+				if (p.compareTo(element) > 0)
 				{
 					eventQ.add(index, element);
 					return;
 				}
+				
+				if (p.compareTo(element) == 0) return;
 			};
 		eventQ.add(element);
 		return;
@@ -262,9 +267,24 @@ public class Segments {
 	
 	 void fillFamily(ArrayList <Vektor> data)
 	 {
+		 for (int i =0; i<=lastGroupNumber+1; i++)
+		 {
+			 family.add(new ArrayList<Vektor>());
+		 }
 		 for (Vektor vek: data)
 		 {
-			 family.get(vek.getGroup()).add(vek);
+			 
+			 try {
+				family.get(vek.getGroup()+1).add(vek);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				System.out.println(lastGroupNumber);
+				System.out.println(vek.getGroup());
+				System.out.println(family.size());
+				System.out.println(family);
+			}
+		
 		 }
 	 }
 	 void sweepAlgorithm(ArrayList<Vektor> data)
@@ -294,6 +314,12 @@ public class Segments {
 
 
 	}
-	
+
+	public ArrayList<ArrayList<Vektor>> getFamily() {
+		return family;
+	}
+
+	 
+	 
 	
 }

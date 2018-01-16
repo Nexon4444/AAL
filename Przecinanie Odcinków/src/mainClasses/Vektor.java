@@ -113,7 +113,7 @@ public class Vektor  {
 
 	@Override
 	public String toString() {
-		return "Vektor [poczX=" + poczX + ", poczY=" + poczY + ", konX=" + konX + ", konY=" + konY + ", group=" + group
+		return "Vektor [(" + poczX + ", " + poczY + "), (" + konX + ", " + konY + "), group=" + group
 				+ "]";
 	}
 
