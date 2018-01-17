@@ -9,7 +9,7 @@ import view.Visualization;
 
 public class Main {
 
-	public static void main(String[] args) throws Exception {
+	public static Segments main(String[] args) throws Exception {
 //		tester();
 		int width = 500;
 		int height = 500;
@@ -35,6 +35,7 @@ public class Main {
 		segment1.showGroups();
 		vis.visualize();
 //		segment2.sweepAlgorithm(ReadData.read("src/mainFunctions/test.txt"));
+		return segment1;
 
 	}
 	public static void tester()
