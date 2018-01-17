@@ -13,6 +13,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
+import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import mainClasses.Point;
 import mainClasses.Vektor;
 
@@ -184,6 +185,11 @@ public class Segments {
 	{
 		Point p1 = null;
 		Point p2 = null;
+		
+		translate.replace(element.vekInter1.getRight(), element.vekInter2.getLeft());
+
+		translate.replace(element.vekInter2.getRight(), element.vekInter1.getLeft());
+		
 		BTree.replace(element.vekInter1.getLeft(), element.vekInter2);
 		BTree.replace(element.vekInter2.getLeft(), element.vekInter1);
 		
@@ -290,8 +296,16 @@ public class Segments {
 		
 		 }
 	 }
+	 void fillTranslate(ArrayList<Vektor> data)
+	 {
+		 for (Vektor vek : data)
+		 {
+			 translate.put(vek.getRight(), vek.getLeft());
+		 }
+	 }
 	 void sweepAlgorithm(ArrayList<Vektor> data) throws Exception
 	{
+		fillTranslate(data);
 		fillQ(data);
 //		System.out.println(eventQ.toString());
 		Point p;

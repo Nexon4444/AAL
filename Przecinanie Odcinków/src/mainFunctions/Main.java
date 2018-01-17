@@ -24,15 +24,15 @@ public class Main {
 		Segments segment1 = new Segments();
 		ArrayList<Vektor> test = createArray();
 //		segment1.primitiveFamilyCheck(gen.getData());
-//		segment1.sweepAlgorithm(gen.getData());
-		segment2.sweepAlgorithm(test);
+		segment1.sweepAlgorithm(gen.getData());
+//		segment2.sweepAlgorithm(test);
 //		segment2.showGroups();
 		
 		System.out.println("=============================================");
 		System.out.println("                 " + segment1.getFamily().equals(segment2.getFamily()));
 		System.out.println("=============================================");
-		Visualization vis = new Visualization(segment2.getFamily(), width, height);
-		segment2.showGroups();
+		Visualization vis = new Visualization(segment1.getFamily(), width, height);
+		segment1.showGroups();
 		vis.visualize();
 //		segment2.sweepAlgorithm(ReadData.read("src/mainFunctions/test.txt"));
 
