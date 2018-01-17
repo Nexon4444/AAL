@@ -1,6 +1,6 @@
 package mainClasses;
 
-public class Vektor  {
+public class Vektor implements Comparable <Vektor>  {
 	private Integer Ordinal;
 	private Double poczX;
 	private Double poczY;
@@ -143,6 +143,12 @@ public class Vektor  {
 
 	public void setRight(Point right) {
 		this.right = right;
+	}
+
+	@Override
+	public int compareTo(Vektor vek) {
+		return (this.getLeft()).compareTo(vek.getLeft());
+
 	}
 
 	

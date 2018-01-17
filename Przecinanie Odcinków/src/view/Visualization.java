@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
@@ -21,6 +22,7 @@ public class Visualization {
 	public void visualize()
 	{
 		JFrame window = new JFrame();
+		window.setBackground(Color.blue);
 		setWindow(window);
 		DrawingComponent DC = new DrawingComponent(family);
 		window.add(DC);
