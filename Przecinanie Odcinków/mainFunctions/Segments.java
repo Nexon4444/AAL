@@ -112,7 +112,7 @@ public class Segments {
 
 		return null;
 	}
-	 void primitiveFamilyCheck(ArrayList<Vektor> data) throws Exception
+	 void primitiveFamilyCheck(ArrayList<Vektor> data)
 	{
 //		family.add(ArrayList<Vektor> = new ArrayList<Vektor> data.get(0));
 		for (int i = 0, max = data.size(); i<max; i++)
@@ -148,7 +148,7 @@ public class Segments {
 			}
 			else
 			{
-				if (vec1.group== -1) //sprawwdziæ czy nie ma b³êdu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (vec1.group== -1) 
 				{
 					vec1.group=vec2.group;
 				}
@@ -193,8 +193,8 @@ public class Segments {
 		BTree.replace(element.vekInter1.getLeft(), element.vekInter2);
 		BTree.replace(element.vekInter2.getLeft(), element.vekInter1);
 		
-		if(element.vekInter1.getRight().getY()>element.vekInter2.getRight().getY()) // if inter1 > inter2, higher end
-		{																			//a co jeœli "=="???????????????????????????????????????????????????????????????????
+		if(element.vekInter1.getRight().getY()>element.vekInter2.getRight().getY())
+		{																			
 			Point higher = element.vekInter2.getLeft();
 			Point lower = element.vekInter1.getLeft();
 			
@@ -272,7 +272,7 @@ public class Segments {
 		}
 	}
 	
-	 void fillFamily(ArrayList <Vektor> data) throws Exception
+	 void fillFamily(ArrayList <Vektor> data)
 	 {
 		 for (int i =0; i<=lastGroupNumber+1; i++)
 		 {
@@ -281,20 +281,11 @@ public class Segments {
 		 for (Vektor vek: data)
 		 {
 			 
-			 try {
+			
 				family.get(vek.getGroup()+1).add(vek);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				System.out.println(lastGroupNumber);
-				System.out.println(vek.getGroup());
-				System.out.println(family.size());
-				System.out.println(family);
-				e.printStackTrace();
-				throw new Exception();
-			}
-		
 		 }
+		
+		 
 	 }
 	 void fillTranslate(ArrayList<Vektor> data)
 	 {
@@ -303,7 +294,7 @@ public class Segments {
 			 translate.put(vek.getRight(), vek.getLeft());
 		 }
 	 }
-	 void sweepAlgorithm(ArrayList<Vektor> data) throws Exception
+	 void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillTranslate(data);
 		fillQ(data);

@@ -1,6 +1,5 @@
 package mainFunctions;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import mainClasses.Point;
@@ -8,28 +7,19 @@ import mainClasses.Vektor;
 import view.Visualization;
 
 public class Main {
-
-	public static Segments main(String[] args) throws Exception {
+	static int width = 2000000000;
+	static int height = 2000000000;
+	static int amount = 1000000000;
+	static int length = 20;
+	static Generator gen = new Generator(length, 0, 5, amount, width, height);
+	public static Segments main(String[] args) {
 //		tester();
-		int width = 500;
-		int height = 500;
-		int amount = 10;
-		int length = 400;
-		Generator gen = new Generator(length, 0, 5, amount, width, height);
-		gen.generate();
-		//gen.showGenerated();
-		Segments segment2 = new Segments();
-//		segment2.sweepAlgorithm(gen.getData());
-//		segment2.showGroups();
-		Segments segment1 = new Segments();
-		ArrayList<Vektor> test = createArray();
-//		segment1.primitiveFamilyCheck(gen.getData());
-		segment1.sweepAlgorithm(gen.getData());
-//		segment2.sweepAlgorithm(test);
-//		segment2.showGroups();
 		
+		
+		
+		Segments segment1 = testSweepAlgorithm();
 		System.out.println("=============================================");
-		System.out.println("                 " + segment1.getFamily().equals(segment2.getFamily()));
+//		System.out.println("                 " + segment1.getFamily().equals(segment2.getFamily()));
 		System.out.println("=============================================");
 		Visualization vis = new Visualization(segment1.getFamily(), width, height);
 		segment1.showGroups();
@@ -38,6 +28,22 @@ public class Main {
 		return segment1;
 
 	}
+	
+	public static Segments testSweepAlgorithm()
+	{
+		Segments segment2 = new Segments();
+		segment2.sweepAlgorithm(gen.getData());
+		return segment2;
+		
+	}
+	
+	public static Segments testPrimitiveFamily()
+	{
+		Segments segment1 = new Segments();
+		segment1.primitiveFamilyCheck(gen.getData());
+		return segment1;
+	}
+	
 	public static void tester()
 	{
 		Vektor vek1 = new Vektor(new Point(0.0, 3.0), new Point(3.0, 0.0));
@@ -55,6 +61,8 @@ public class Main {
 		vek.add(new Vektor(new Point(9.0, 3.0), new Point(10.0, 0.0)));
 		return vek;
 	}
+	
+	
 }
 
 //vek.add(new Vektor(new Point(0.0, 7.0), new Point(8.0, 7.0)));

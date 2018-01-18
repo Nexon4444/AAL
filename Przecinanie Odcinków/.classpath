@@ -8,5 +8,6 @@
 	<classpathentry kind="lib" path="E:/Users/Nexon/workspace/Biblioteki/commons-math3-3.6.1/commons-math3-3.6.1-tests.jar"/>
 	<classpathentry kind="lib" path="E:/Users/Nexon/workspace/Biblioteki/commons-math3-3.6.1/commons-math3-3.6.1-test-sources.jar"/>
 	<classpathentry kind="lib" path="E:/Users/Nexon/workspace/Biblioteki/commons-math3-3.6.1/commons-math3-3.6.1-tools.jar"/>
+	<classpathentry kind="lib" path="E:/Users/Nexon/workspace/Biblioteki/jmh-core-1.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
