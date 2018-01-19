@@ -82,8 +82,8 @@ public class Generator {
 
 	@Override
 	public String toString() {
-		return "Generator [s=" + s + ", mean=" + mean + ", variance=" + variance + ", amount=" + amount + ", width="
-				+ width + ", height=" + height + ", random=" + random + ", data=" + data + "]";
+		return "Generator [s=" + s + ", mean=" + mean + ", variance=" + variance + ", width="
+				+ width + ", height=" + height +"]";
 	}	
 	
 	

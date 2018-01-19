@@ -1,9 +1,13 @@
 package mainFunctions;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
+import java.util.Map;
+import java.util.NavigableMap;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListMap;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -26,7 +30,7 @@ public class Segments {
 
 	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
-	LinkedList<Point> eventQ = new LinkedList<Point>();
+	NavigableMap<Point, Point> eventQ = new ConcurrentSkipListMap<Point, Point>();
 	HashMap<Point, Point> translate = new HashMap<Point, Point>();
 	Integer lastGroupNumber = -1 ;
 	static int intersectionAmount = 0;
@@ -230,30 +234,31 @@ public class Segments {
 		BTree.remove(element.getVek().getLeft());
 	}
 
-	 void inputQ(Point element)
+	 synchronized void inputQ(Point element)
 	{
-		if (eventQ.isEmpty())
-			{
-				eventQ.add(element);
-				return;
-			}
-		else for (ListIterator<Point> it = eventQ.listIterator(); it.hasNext();)
-			{
-				int index = it.nextIndex();
-				Point p = it.next();
-				if (p.compareTo(element) > 0)
-				{
-					eventQ.add(index, element);
-					return;
-				}
-				
-				if (p.compareTo(element) == 0) return;
-			};
-		eventQ.add(element);
+		 eventQ.putIfAbsent(element, element);
+//		if (eventQ.isEmpty())
+//			{
+//				eventQ.(element, element);
+//				return;
+//			}
+//		else for (TreeMapIterator<Point> it = eventQ.listIterator(); it.hasNext();)
+//			{
+//				int index = it.nextIndex();
+//				Point p = it.next();
+//				if (p.compareTo(element) > 0)
+//				{
+//					eventQ.add(index, element);
+//					return;
+//				}
+//				
+//				if (p.compareTo(element) == 0) return;
+//			};
+//		eventQ.add(element);
 		return;
 	}
 	 
-	 void inputQOLD(Point element)
+	 /*void inputQOLD(Point element)
 		{
 			if (eventQ.isEmpty())
 				{
@@ -274,7 +279,7 @@ public class Segments {
 				};
 			eventQ.add(element);
 			return;
-		}
+		}*/
 	
 	 void fillQ(ArrayList<Vektor> data)
 	{
@@ -303,7 +308,7 @@ public class Segments {
 	 {
 		family = new ArrayList <ArrayList<Vektor>>();
 		BTree = new TreeMap<Point, Vektor>();
-		eventQ = new LinkedList<Point>();
+		eventQ = new TreeMap<Point, Point>();
 		translate = new HashMap<Point, Point>();
 		lastGroupNumber = -1 ;
 	 }
@@ -328,14 +333,14 @@ public class Segments {
 			 translate.put(vek.getRight(), vek.getLeft());
 		 }
 	 }
-	 void sweepAlgorithm(ArrayList<Vektor> data)
+	 synchronized void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillTranslate(data);
 		fillQ(data);
 //		System.out.println(eventQ.toString());
 		Point p;
-		for (int i = 0; i<eventQ.size();i++)
-		{	p = eventQ.get(i);
+		for (Iterator<Map.Entry<Point, Point>> entries = eventQ.entrySet().iterator(); entries.hasNext();)
+		{	p = entries.next().getKey();
 			switch (p.getSide()) {
 			case -1:
 				inputBTree(p);
@@ -356,6 +361,35 @@ public class Segments {
 
 
 	}
+	 
+	/* void sweepAlgorithmOld(ArrayList<Vektor> data)
+		{
+			fillTranslate(data);
+			fillQ(data);
+//			System.out.println(eventQ.toString());
+			Point p;
+			for (int i = 0; i<eventQ.size();i++)
+			{	p = eventQ.get(i);
+				switch (p.getSide()) {
+				case -1:
+					inputBTree(p);
+					processLeftPoint(p);
+					break;
+				case 0:
+					processIntersection(p);
+					break;
+				case 1:
+					processRightPoint(translate.get(p));
+					break;
+				default:
+					break;
+				}
+				
+			}
+			fillFamily(data);
+
+
+		}*/
 
 	public ArrayList<ArrayList<Vektor>> getFamily() {
 		return family;
