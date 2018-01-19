@@ -244,10 +244,12 @@ public class Test {
 			print(n.toString());
 			
 			Long y = results.get(i);
-			Long x = results.get(i)/100000 ;
+			Long x = results.get(i)/100000;
 			
 			print(x.toString());
-			Double q = new Double(y/(c*n*logn(n)));
+			Double q = new Double(y/(c*n*n));
+//			2
+			System.out.println("n*n=" + (n*n) + "c=" + c + "y=" + y  );
 			print(q.toString());
 			System.out.println();
 		}
