@@ -226,9 +226,9 @@ public class Test {
 		int medianIndx = (results.size()+1)/2-1;
 		Long medianTime = results.get(medianIndx);
 		int medianN = vekAmountMin+(medianIndx)*vekAmountStep;// vekAmountMin+(medianIndx-1)*vekAmountStep;
-		System.out.println("medianN: " + medianN);
-		System.out.println("nlogn: " +  medianN*medianN);
-		System.out.println("medianTime: " + medianTime);
+//		System.out.println("medianN: " + medianN);
+//		System.out.println("nlogn: " +  medianN*medianN);
+//		System.out.println("medianTime: " + medianTime);
 		double T = ((double) medianN*medianN);
 		double c = medianTime/T;
 		System.out.println("Algorithm: Primitive");
@@ -249,7 +249,7 @@ public class Test {
 			print(x.toString());
 			Double q = new Double(y/(c*n*n));
 //			2
-			System.out.println("n*n=" + (n*n) + "c=" + c + "y=" + y  );
+
 			print(q.toString());
 			System.out.println();
 		}
