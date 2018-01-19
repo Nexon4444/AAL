@@ -75,13 +75,10 @@ public class Generator {
 		 	System.out.println(vek.toString());
 		}
 	}
-	
-	
+		
 	public ArrayList<Vektor> getData() {
 		return data;
 	}
-
-
 
 	@Override
 	public String toString() {

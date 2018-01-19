@@ -13,7 +13,7 @@ import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
 
-import jdk.internal.org.objectweb.asm.tree.analysis.Value;
+
 import mainClasses.Point;
 import mainClasses.Vektor;
 
@@ -23,13 +23,14 @@ import mainClasses.Vektor;
  */
 public class Segments {
 	
-	ArrayList<ArrayList<Vektor>> arrayOfData;
-	ArrayList<ArrayList<Vektor>> arrayOfGroups;
+
 	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
 	LinkedList<Point> eventQ = new LinkedList<Point>();
 	HashMap<Point, Point> translate = new HashMap<Point, Point>();
-	 Integer lastGroupNumber = -1 ;
+	Integer lastGroupNumber = -1 ;
+	static int intersectionAmount = 0;
+	
 	 public static Point checkIfIntersect(Vektor vec1, Vektor vec2)
 	{	
 		if (vec1 == null || vec2 == null) return null;
@@ -54,6 +55,8 @@ public class Segments {
 
 			return null;
 		}
+		Point p = checkIfBelongs(vec1, vec2, solution.getEntry(1), solution.getEntry(0));
+		if (p != null) intersectionAmount++;
 		return checkIfBelongs(vec1, vec2, solution.getEntry(1), solution.getEntry(0));
 
 	}
@@ -112,7 +115,7 @@ public class Segments {
 
 		return null;
 	}
-	 void primitiveFamilyCheck(ArrayList<Vektor> data) throws Exception
+	 void primitiveFamilyCheck(ArrayList<Vektor> data)
 	{
 //		family.add(ArrayList<Vektor> = new ArrayList<Vektor> data.get(0));
 		for (int i = 0, max = data.size(); i<max; i++)
@@ -181,6 +184,7 @@ public class Segments {
 		if (p1!=null) inputQ(p1);
 		if (p2!=null) inputQ(p2);
 	}
+	
 	 void processIntersection(Point element)
 	{
 		Point p1 = null;
@@ -225,7 +229,7 @@ public class Segments {
 		if (point != null) inputQ(point);
 		BTree.remove(element.getVek().getLeft());
 	}
-	
+
 	 void inputQ(Point element)
 	{
 		if (eventQ.isEmpty())
@@ -248,6 +252,29 @@ public class Segments {
 		eventQ.add(element);
 		return;
 	}
+	 
+	 void inputQOLD(Point element)
+		{
+			if (eventQ.isEmpty())
+				{
+					eventQ.add(element);
+					return;
+				}
+			else for (ListIterator<Point> it = eventQ.listIterator(); it.hasNext();)
+				{
+					int index = it.nextIndex();
+					Point p = it.next();
+					if (p.compareTo(element) > 0)
+					{
+						eventQ.add(index, element);
+						return;
+					}
+					
+					if (p.compareTo(element) == 0) return;
+				};
+			eventQ.add(element);
+			return;
+		}
 	
 	 void fillQ(ArrayList<Vektor> data)
 	{
@@ -271,8 +298,17 @@ public class Segments {
 			i++;
 		}
 	}
-	
-	 void fillFamily(ArrayList <Vektor> data) throws Exception
+	 
+	 void clear()
+	 {
+		family = new ArrayList <ArrayList<Vektor>>();
+		BTree = new TreeMap<Point, Vektor>();
+		eventQ = new LinkedList<Point>();
+		translate = new HashMap<Point, Point>();
+		lastGroupNumber = -1 ;
+	 }
+	 
+	 void fillFamily(ArrayList <Vektor> data)
 	 {
 		 for (int i =0; i<=lastGroupNumber+1; i++)
 		 {
@@ -280,19 +316,8 @@ public class Segments {
 		 }
 		 for (Vektor vek: data)
 		 {
-			 
-			 try {
-				family.get(vek.getGroup()+1).add(vek);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-//				e.printStackTrace();
-				System.out.println(lastGroupNumber);
-				System.out.println(vek.getGroup());
-				System.out.println(family.size());
-				System.out.println(family);
-				e.printStackTrace();
-				throw new Exception();
-			}
+			
+			family.get(vek.getGroup()+1).add(vek);
 		
 		 }
 	 }
@@ -303,7 +328,7 @@ public class Segments {
 			 translate.put(vek.getRight(), vek.getLeft());
 		 }
 	 }
-	 void sweepAlgorithm(ArrayList<Vektor> data) throws Exception
+	 void sweepAlgorithm(ArrayList<Vektor> data)
 	{
 		fillTranslate(data);
 		fillQ(data);

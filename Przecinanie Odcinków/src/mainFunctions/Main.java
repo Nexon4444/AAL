@@ -1,6 +1,5 @@
 package mainFunctions;
 
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import mainClasses.Point;
@@ -9,7 +8,7 @@ import view.Visualization;
 
 public class Main {
 
-	public static Segments main(String[] args) throws Exception {
+	public static void main(String[] args) {
 //		tester();
 		int width = 500;
 		int height = 500;
@@ -17,12 +16,15 @@ public class Main {
 		int length = 400;
 		Generator gen = new Generator(length, 0, 5, amount, width, height);
 		gen.generate();
-		//gen.showGenerated();
-		Segments segment2 = new Segments();
-//		segment2.sweepAlgorithm(gen.getData());
-//		segment2.showGroups();
 		Segments segment1 = new Segments();
-		ArrayList<Vektor> test = createArray();
+		Segments segment2 = new Segments();
+		Test test = new Test(segment1, gen, 10);
+		
+//		System.out.println(test.testPrimitive());
+//		System.out.println(test.testSweepLine());
+
+
+//		ArrayList<Vektor> test = createArray();
 //		segment1.primitiveFamilyCheck(gen.getData());
 		segment1.sweepAlgorithm(gen.getData());
 //		segment2.sweepAlgorithm(test);
@@ -32,10 +34,10 @@ public class Main {
 		System.out.println("                 " + segment1.getFamily().equals(segment2.getFamily()));
 		System.out.println("=============================================");
 		Visualization vis = new Visualization(segment1.getFamily(), width, height);
-		segment1.showGroups();
-		vis.visualize();
+//		segment1.showGroups();
+//		vis.visualize();
 //		segment2.sweepAlgorithm(ReadData.read("src/mainFunctions/test.txt"));
-		return segment1;
+//		return segment1;
 
 	}
 	public static void tester()
