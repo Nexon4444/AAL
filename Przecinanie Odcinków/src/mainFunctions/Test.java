@@ -59,7 +59,7 @@ public class Test {
 		for (int i=0; i < actionAmount; i++)
 		{
 			segm = new Segments();
-			gen = new Generator(length, 0, 5, vekAmountMin, width, height);
+			gen = new Generator(length, 0, 5, vekAmountMax/2, width, height);
 			try {
 				segm.primitiveFamilyCheck(gen.getData());
 				blackhole.add(segm.getFamily());
@@ -78,7 +78,7 @@ public class Test {
 	for (int i=0; i < actionAmount; i++)
 	{
 		segm = new Segments();
-		gen = new Generator(length, 0, 5, vekAmountMin, width, height);
+		gen = new Generator(length, 0, 5, vekAmountMax/2, width, height);
 		try {
 			segm.sweepAlgorithm(gen.getData());
 			blackhole.add(segm.getFamily());
