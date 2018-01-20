@@ -13,6 +13,10 @@ import mainClasses.Vektor;
 
 
 public class DrawingComponent extends JComponent{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	ArrayList<Color> colours;
 	Random random = new Random();
@@ -51,7 +55,7 @@ public class DrawingComponent extends JComponent{
 			g2d.setPaint(generateColor(i)); 
 			for(Vektor vek : vekArr)
 			{
-				Line2D.Double line = new Line2D.Double(vek.getPoczX(), vek.getPoczY(), vek.getKonX(), vek.getKonY());
+				Line2D.Double line = new Line2D.Double(vek.getPoczX()*Visualization.ratio, vek.getPoczY()*Visualization.ratio, vek.getKonX()*Visualization.ratio, vek.getKonY()*Visualization.ratio);
 				
 				g2d.draw(line);
 			}

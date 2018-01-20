@@ -11,7 +11,7 @@ public class Visualization {
 	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	 int width;
 	 int height;
-
+	 public static int ratio = 100;
 	public Visualization(ArrayList<ArrayList<Vektor>> family, int width, int height) {
 		super();
 		this.family = family;

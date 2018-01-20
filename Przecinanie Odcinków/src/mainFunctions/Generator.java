@@ -16,7 +16,7 @@ public class Generator {
 	Random random = new Random();
 	ArrayList<Vektor> data = new ArrayList<Vektor>();
 	
-	public Generator(int s, int mean, int variance, int amount, int width, int height) {
+	public Generator(int s, int variance, int amount, int width, int height) {
 		super();
 		this.s = s;
 		this.mean = s/2;
@@ -34,7 +34,7 @@ public class Generator {
 		{
 			Point pocz = genarateFirstPoint();
 			Point kon = genarateSecondPoint(pocz);
-			Vektor vek = new Vektor(pocz, genarateSecondPoint(pocz));
+			Vektor vek = new Vektor(pocz, kon);
 			data.add(vek);
 //			System.out.println(vek.toString());
 		}

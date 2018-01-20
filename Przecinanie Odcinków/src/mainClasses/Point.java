@@ -71,11 +71,6 @@ public class Point implements Comparable <Point> {
 	public void setVek(Vektor vek) {
 		this.vek = vek;
 	}
-//	public String toString()
-//	{
-//		return new String("(" + x + ", " + y + ")" );
-//		
-//	}
 	
 	
 	@Override

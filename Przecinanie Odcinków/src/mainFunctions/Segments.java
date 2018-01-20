@@ -1,13 +1,13 @@
 package mainFunctions;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.ListIterator;
-import java.util.Map;
-import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import org.apache.commons.math3.linear.Array2DRowRealMatrix;
 import org.apache.commons.math3.linear.ArrayRealVector;
@@ -16,7 +16,6 @@ import org.apache.commons.math3.linear.LUDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.SingularMatrixException;
-
 
 import mainClasses.Point;
 import mainClasses.Vektor;
@@ -30,7 +29,12 @@ public class Segments {
 
 	ArrayList <ArrayList<Vektor>> family = new ArrayList <ArrayList<Vektor>>();
 	TreeMap<Point, Vektor> BTree = new TreeMap<Point, Vektor>();
-	NavigableMap<Point, Point> eventQ = new ConcurrentSkipListMap<Point, Point>();
+//	NavigableMap<Point, Point> eventQ = new ConcurrentSkipListMap<Point, Point>();
+	
+	Comparator<Point> comp = (Point p1, Point p2) -> (p1.compareTo(p2));
+	TreeSet<Point> eventQ = new TreeSet<Point>(comp);
+//	ConcurrentSkipListSet<Point> eventQ = new ConcurrentSkipListSet<Point>(comp);
+//	Set<Point> eventQ= Collections.synchronizedSortedSet(new TreeSet<Point>());
 	HashMap<Point, Point> translate = new HashMap<Point, Point>();
 	Integer lastGroupNumber = -1 ;
 	static int intersectionAmount = 0;
@@ -83,13 +87,10 @@ public class Segments {
 	
 	 ArrayList <ArrayList <Integer>> primitiveFamilyCheckOLD(ArrayList<Vektor> listOfVektors)
 	{
-		int ArrayList;
 		ArrayList <Vektor> pom = new ArrayList<Vektor> ();
 		pom.add(listOfVektors.get(0));
 		family.add(pom);
-			
-		
-//		family.add(ArrayList<Vektor> = new ArrayList<Vektor> listOfVektors.get(0));
+
 		for (int i = 0, max = listOfVektors.size(); i<max; i++)
 			{
 			 Vektor vekPoz = listOfVektors.get(0);
@@ -100,7 +101,6 @@ public class Segments {
 				  Vektor vekPion = listOfVektors.get(j);
 					if(checkIfIntersect(vekPoz, vekPion)!=null) 
 						{
-							//listOfVektors.remove(vekPion);
 							vekPion.setIsGrouped(true);
 							family.get(i).add(vekPion);
 							flag = true;
@@ -119,9 +119,8 @@ public class Segments {
 
 		return null;
 	}
-	 void primitiveFamilyCheck(ArrayList<Vektor> data)
+	 void brutalCheck(ArrayList<Vektor> data)
 	{
-//		family.add(ArrayList<Vektor> = new ArrayList<Vektor> data.get(0));
 		for (int i = 0, max = data.size(); i<max; i++)
 			{
 			 Vektor vekPoz = data.get(i);
@@ -132,7 +131,6 @@ public class Segments {
 				 }
 			}
 		fillFamily(data);
-//		return null;
 	}
 	
 	 void fillTree(ArrayList<Vektor> data) //fill the tree with values
@@ -155,7 +153,7 @@ public class Segments {
 			}
 			else
 			{
-				if (vec1.group== -1) //sprawwdziæ czy nie ma b³êdu !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				if (vec1.group== -1) 
 				{
 					vec1.group=vec2.group;
 				}
@@ -174,7 +172,7 @@ public class Segments {
 		BTree.put(element, element.getVek());
 	}
 	
-	 void processLeftPoint(Point element)
+	 boolean processLeftPoint(Point element)
 	{
 		translate.put(element.getVek().getRight(), element);
 		Vektor vek1=null;
@@ -187,9 +185,10 @@ public class Segments {
 		Point p2 = mark(vek2, element.getVek());
 		if (p1!=null) inputQ(p1);
 		if (p2!=null) inputQ(p2);
+		return p1!=null||p2!=null;
 	}
 	
-	 void processIntersection(Point element)
+	 boolean processIntersection(Point element)
 	{
 		Point p1 = null;
 		Point p2 = null;
@@ -225,61 +224,26 @@ public class Segments {
 			inputQ(p1);
 		if (p2!=null) 
 			inputQ(p2);
+		return p1!=null||p2!=null;
 	}
-	 void processRightPoint(Point element)
+	 boolean processRightPoint(Point element)
 	{
 		Point point = null;
 		if(BTree.higherKey(element)!=null && BTree.lowerKey(element)!=null) point = mark(BTree.higherKey(element).getVek(), BTree.lowerKey(element).getVek());
 		if (point != null) inputQ(point);
 		BTree.remove(element.getVek().getLeft());
+		return point!=null;
 	}
 
 	 synchronized void inputQ(Point element)
 	{
-		 eventQ.putIfAbsent(element, element);
-//		if (eventQ.isEmpty())
-//			{
-//				eventQ.(element, element);
-//				return;
-//			}
-//		else for (TreeMapIterator<Point> it = eventQ.listIterator(); it.hasNext();)
-//			{
-//				int index = it.nextIndex();
-//				Point p = it.next();
-//				if (p.compareTo(element) > 0)
-//				{
-//					eventQ.add(index, element);
-//					return;
-//				}
-//				
-//				if (p.compareTo(element) == 0) return;
-//			};
-//		eventQ.add(element);
-		return;
+		 TreeSet<Point> aux = new TreeSet<Point>(comp);
+		 aux.addAll(eventQ);
+		 if (!aux.contains(element))aux.add(element);
+		 eventQ = aux;
 	}
 	 
-	 /*void inputQOLD(Point element)
-		{
-			if (eventQ.isEmpty())
-				{
-					eventQ.add(element);
-					return;
-				}
-			else for (ListIterator<Point> it = eventQ.listIterator(); it.hasNext();)
-				{
-					int index = it.nextIndex();
-					Point p = it.next();
-					if (p.compareTo(element) > 0)
-					{
-						eventQ.add(index, element);
-						return;
-					}
-					
-					if (p.compareTo(element) == 0) return;
-				};
-			eventQ.add(element);
-			return;
-		}*/
+
 	
 	 void fillQ(ArrayList<Vektor> data)
 	{
@@ -292,8 +256,6 @@ public class Segments {
 	
 	 void showGroups()
 	{
-		ArrayList <ArrayList <Vektor>> result = new ArrayList <ArrayList <Vektor>>();
-		ArrayList <Vektor> aux = new ArrayList <Vektor>();
 		int i =0;
 		for (ArrayList <Vektor> vekArr : family)
 		{
@@ -308,7 +270,7 @@ public class Segments {
 	 {
 		family = new ArrayList <ArrayList<Vektor>>();
 		BTree = new TreeMap<Point, Vektor>();
-		eventQ = new TreeMap<Point, Point>();
+		TreeSet<Point> eventQ = new TreeSet<Point>(comp);
 		translate = new HashMap<Point, Point>();
 		lastGroupNumber = -1 ;
 	 }
@@ -333,43 +295,19 @@ public class Segments {
 			 translate.put(vek.getRight(), vek.getLeft());
 		 }
 	 }
-	 synchronized void sweepAlgorithm(ArrayList<Vektor> data)
-	{
-		fillTranslate(data);
-		fillQ(data);
-//		System.out.println(eventQ.toString());
-		Point p;
-		for (Iterator<Map.Entry<Point, Point>> entries = eventQ.entrySet().iterator(); entries.hasNext();)
-		{	p = entries.next().getKey();
-			switch (p.getSide()) {
-			case -1:
-				inputBTree(p);
-				processLeftPoint(p);
-				break;
-			case 0:
-				processIntersection(p);
-				break;
-			case 1:
-				processRightPoint(translate.get(p));
-				break;
-			default:
-				break;
-			}
-			
-		}
-		fillFamily(data);
-
-
-	}
-	 
-	/* void sweepAlgorithmOld(ArrayList<Vektor> data)
+	 synchronized void sweepAlgorithmOLD(ArrayList<Vektor> data)
 		{
 			fillTranslate(data);
 			fillQ(data);
 //			System.out.println(eventQ.toString());
+			for (Point p : eventQ)
+			{
+				System.out.println(p);
+			}
 			Point p;
-			for (int i = 0; i<eventQ.size();i++)
-			{	p = eventQ.get(i);
+			for (Iterator <Point> it = eventQ.iterator(); it.hasNext();)
+			{	
+				p = it.next();
 				switch (p.getSide()) {
 				case -1:
 					inputBTree(p);
@@ -384,18 +322,76 @@ public class Segments {
 				default:
 					break;
 				}
-				
 			}
 			fillFamily(data);
+		}
 
+	 synchronized void sweepAlgorithm(ArrayList<Vektor> data)
+	{
+		fillTranslate(data);
+		fillQ(data);
+		boolean modified = false;
+//		System.out.println(eventQ.toString());
 
-		}*/
+		Point p;
+//		for (Iterator <Point> it = eventQ.iterator(); it.hasNext();)
+//		{	
+//			p = it.next();
+//			switch (p.getSide()) {
+//			case -1:
+//				inputBTree(p);
+//				//processLeftPoint(p);
+//				break;
+//			case 0:
+//				processIntersection(p);
+//				break;
+////			case 1:
+////				processRightPoint(translate.get(p));
+////				break;
+//			default:
+//				break;
+//			}
+//		}
+		while(true)
+		{
+		 Iterator <Point> it = eventQ.iterator();
+		 modified = false;
+		while (it.hasNext())
+		{	
+			p = it.next();
+			switch (p.getSide()) {
+			case -1:
+				inputBTree(p);
+				modified = processLeftPoint(p);
+				it.remove();
+				eventQ.remove(p);
+				break;
+			case 0:
+				modified=processIntersection(p);
+				it.remove();
+				eventQ.remove(p);
+				break;
+			case 1:
+				modified = processRightPoint(translate.get(p));
+				it.remove();
+				eventQ.remove(p);
+				break;
+			default:
+				break;
+			}
+		   if (modified) break;
+		}
+		if (!it.hasNext())
+		{
+			
+			break;
+		}
+//		it.next();
+		}
+		fillFamily(data);
+	}
 
 	public ArrayList<ArrayList<Vektor>> getFamily() {
 		return family;
 	}
-
-	 
-	 
-	
 }

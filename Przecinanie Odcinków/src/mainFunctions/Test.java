@@ -34,8 +34,6 @@ public class Test {
 		this.data = gen.getData();
 
 	}
-	
-	
 
 	public Test(int vekAmountMin, int vekAmountMax, int vekAmountStep, int length, int variance) {
 		super();
@@ -46,26 +44,21 @@ public class Test {
 		this.variance = variance;
 	}
 
-
-
 	public Test() {
 		super();
 	}
-
-
 
 	void warmupPrimitive ()
 	{System.out.println("warming up primitive =========================");
 		for (int i=0; i < actionAmount; i++)
 		{
 			segm = new Segments();
-			gen = new Generator(length, 0, 5, vekAmountMax/2, width, height);
+			gen = new Generator(length, 5, vekAmountMax/2, width, height);
 			try {
-				segm.primitiveFamilyCheck(gen.getData());
+				segm.brutalCheck(gen.getData());
 				blackhole.add(segm.getFamily());
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -78,13 +71,12 @@ public class Test {
 	for (int i=0; i < actionAmount; i++)
 	{
 		segm = new Segments();
-		gen = new Generator(length, 0, 5, vekAmountMax/2, width, height);
+		gen = new Generator(length, 5, vekAmountMax/2, width, height);
 		try {
 			segm.sweepAlgorithm(gen.getData());
 			blackhole.add(segm.getFamily());
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -98,45 +90,21 @@ public class Test {
 		long startime = System.nanoTime();
 		for (int i=0; i < actionAmount; i++)
 		{
-			gen = new Generator(length, 0, variance, amount, width, height);
+			gen = new Generator(length, variance, amount, width, height);
 			gen.generate();
 			try {
-				segm.primitiveFamilyCheck(gen.getData());
+				segm.brutalCheck(gen.getData());
 				blackhole.add(segm.getFamily());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		//segm.primitiveFamilyCheck(data);
+	
 		primitiveEstimated = (System.nanoTime() - startime)/actionAmount;
 		blackhole.add(segm.getFamily());
 		return primitiveEstimated;
 		
 	}
-	
-//	long measurePrimitive(int amount)
-//	{
-//		
-//		long startime = System.nanoTime();
-//		for (int i=0; i < warmUpAmount; i++)
-//		{
-//			gen = new Generator(length, 0, 10, amount, width, height);
-//			gen.generate();
-//			try {
-//				segm.primitiveFamilyCheck(gen.getData());
-//				blackhole.add(segm.getFamily());
-//			} catch (Exception e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//		}
-//		//segm.primitiveFamilyCheck(data);
-//		primitiveEstimated = (System.nanoTime() - startime)/warmUpAmount;
-//		blackhole.add(segm.getFamily());
-//		return primitiveEstimated;
-//		
-//	}
 	
 	
 	long measureSweepLine(int amount)
@@ -144,38 +112,25 @@ public class Test {
 		long startime = System.nanoTime();
 		for (int i=0; i < actionAmount; i++)
 		{
-			gen = new Generator(length, 0, 10, amount, width, height);
+			gen = new Generator(length, 10, amount, width, height);
 			gen.generate();
 			try {
 				segm.sweepAlgorithm(gen.getData());
 				blackhole.add(segm.getFamily());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		//segm.primitiveFamilyCheck(data);
 		primitiveEstimated = (System.nanoTime() - startime)/actionAmount;
 		blackhole.add(segm.getFamily());
 		return primitiveEstimated;
 		
 	}
-	
-//	long testPrimitive()
-//	{
-//		
-//		return measurePrimitive();
-//	}
-//	
-//	long testSweepLine()
-//	{
-//		return measureSweepLine();
-//	}
+
 	
 	void testBoth()
 	{
-//		testPrimitive();
-//		testSweepLine();
+
 		System.out.println("primitve to sweep" + primitiveEstimated/sweepEstimated);
 	}
 	
@@ -189,10 +144,7 @@ public class Test {
 		System.out.println("generator settings: " + gen.toString());
 		int medianIndx = (results.size()+1)/2-1;
 		Long medianTime = results.get(medianIndx);
-		int medianN = vekAmountMin+(medianIndx)*vekAmountStep;// vekAmountMin+(medianIndx-1)*vekAmountStep;
-//		System.out.println("medianN: " + medianN);
-//		System.out.println("nlogn: " +  medianN*(logn(medianN)));
-//		System.out.println("medianTime: " + medianTime);
+		int medianN = vekAmountMin+(medianIndx)*vekAmountStep;
 		double T = ((double) medianN*(logn(medianN)));
 		double c = medianTime/T;
 		
@@ -225,10 +177,7 @@ public class Test {
 		System.out.println("generator settings: " + gen.toString());
 		int medianIndx = (results.size()+1)/2-1;
 		Long medianTime = results.get(medianIndx);
-		int medianN = vekAmountMin+(medianIndx)*vekAmountStep;// vekAmountMin+(medianIndx-1)*vekAmountStep;
-//		System.out.println("medianN: " + medianN);
-//		System.out.println("nlogn: " +  medianN*medianN);
-//		System.out.println("medianTime: " + medianTime);
+		int medianN = vekAmountMin+(medianIndx)*vekAmountStep;
 		double T = ((double) medianN*medianN);
 		double c = medianTime/T;
 		System.out.println("Algorithm: Primitive");
@@ -248,7 +197,6 @@ public class Test {
 			
 			print(x.toString());
 			Double q = new Double(y/(c*n*n));
-//			2
 
 			print(q.toString());
 			System.out.println();
@@ -276,7 +224,7 @@ public class Test {
 		segm = new Segments();
 		
 		results.add(measurePrimitive(amount));
-//		System.out.println("amount=" + amount + " " + measurePrimitive(amount));
+
 	}
 	
 	viewPrimitive();

@@ -1,8 +1,0 @@
-/**
- * 
- */
-/**
- * @author Nexon
- *
- */
-package mainClasses;
